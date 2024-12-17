@@ -1,7 +1,10 @@
 package com.koreait.board.controller;
 
+import com.koreait.board.bean.SubjectVO;
+import com.koreait.board.mapper.TimeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.koreait.board.bean.ArtVO;
 import com.koreait.board.util.MyUtil;
-
 import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 
 @RequestMapping("/ex/*")  // localhost:10000/ex는 제껍니다
 public class ExampleController {
 	private final Logger log = LoggerFactory.getLogger(getClass());
+
+	@Autowired
+	private TimeMapper mapper;
+
 	@GetMapping("")
 	public void nothing() {
 		log.info("Nothing Method is called");
@@ -89,17 +96,13 @@ public class ExampleController {
 
 	@GetMapping("subject")
 	public void subject(){}
-	
+
 	@GetMapping("subjectVO")
-	public String subjectVO(Model model, int kor, int math, int eng) {
-		// Model을 이용하여 kor 10점, math 20점, eng 40점을 subjectVO.html로 전달하시오.
-		// subjectVO.html에서는 kor, math, eng 점수를 받아서 출력하시오.
-		// html에서 과목 점수 합계와 평균을 출력하시오.
-		model.addAttribute("kor", kor);
-		model.addAttribute("math", math);
-		model.addAttribute("eng", eng);
-		model.addAttribute("sum", kor+ math+ eng);
-		model.addAttribute("avg",(kor+math+eng)/3F);
-		return "/ex/subjectVO";
+	public String subjectVO(Model model, SubjectVO vo) {
+		// SubjectVO 객체 자체를 model에 추가
+
+		model.addAttribute("tm", mapper.getTime1());
+		model.addAttribute("vo", vo);
+		return "ex/subjectVO";
 	}
 }

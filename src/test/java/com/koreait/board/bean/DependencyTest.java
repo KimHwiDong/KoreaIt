@@ -3,17 +3,21 @@ package com.koreait.board.bean;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.koreait.board.util.MyUtil;
 
-import lombok.extern.slf4j.Slf4j;
+
 
 @SpringBootTest
-@Slf4j
+
 public class DependencyTest {
-	
+
+	public static Logger log = LoggerFactory.getLogger("DependencyTest");
+
 	@Autowired
 	public ClassRoom cr;
 
