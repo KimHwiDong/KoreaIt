@@ -27,7 +27,7 @@ public class BoardController {
         log.info("Get List Called");
 
         if(keyword == null){
-            model.addAttribute("List", dao.getList());
+            model.addAttribute("list", dao.getList());
         }else{
             model.addAttribute("list", dao.getListWithKey(type, keyword));
         }

@@ -22,4 +22,18 @@
         WHERE BNO > 0
         ]]>
     </select>
+
+    <select id="get" resultType="com.koreait.board.bean.BoardVO">
+        SELECT * FROM TBL_BOARD WHERE bno = #{bno}
+    </select>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM TBL_BOARD WHERE bno = #{bno}
+    </delete>
+
+    <update id="update">
+        UPDATE TBL_BOARD
+        SET    TITLE = #{title}, CONTENT = #{content}, WRITER = #{writer}, UPDATEDATE = SYSDATE()
+        WHERE  BNO = #{bno}
+    </update>
 </mapper>
