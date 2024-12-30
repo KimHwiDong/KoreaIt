@@ -2,12 +2,14 @@ package com.koreait.board.dao;
 
 import com.koreait.board.bean.BoardVO;
 import com.koreait.board.mapper.BoardMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class BoardDAO {
+    @Autowired
     private BoardMapper mapper;
 
     //getList
