@@ -8,6 +8,8 @@ public class BoardVO {
     private String title;
     private String content;
     private String writer;
+    private String regdate;
+    private String updatedate;
 
     public String toString(){
         return "Board [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + "]";
@@ -20,9 +22,6 @@ public class BoardVO {
     public void setWriter(String writer) {
         this.writer = writer;
     }
-
-    private String regdate;
-    private String updatedate;
 
     public Long getBno() {
         return bno;

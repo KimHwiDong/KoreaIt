@@ -12,7 +12,6 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
     public int insert(BoardVO vo);
-
     /**
      * bno 채번 결과를 vo에 담는다
      * @param vo
@@ -26,5 +25,9 @@ public interface BoardMapper {
      */
     public List<BoardVO> getList();
 
+    //게시글 조회
+    public BoardVO get(Long bno);
 
+    //게시글 업데이트
+    public int update(BoardVO board);
 }
