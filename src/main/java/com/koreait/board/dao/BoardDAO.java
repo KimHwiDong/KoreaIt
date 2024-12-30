@@ -10,9 +10,12 @@ import java.util.List;
 public class BoardDAO {
     private BoardMapper mapper;
 
-            //getList
+    //getList
     public List<BoardVO> getList(){
         return mapper.getList();
+    }
+    public List<BoardVO> getListWithKey(String type, String keyword){
+        return mapper.getListWithKey(type, keyword);
     }
     //register
     public int register(BoardVO board){
@@ -25,5 +28,9 @@ public class BoardDAO {
     //modify
     public int modify(BoardVO board){
         return mapper.update(board);
+    }
+    //remove
+    public int remove(Long bno){
+        return mapper.delete(bno);
     }
 }

@@ -1,5 +1,6 @@
 package com.koreait.board.controller;
 
+import org.springframework.ui.Model;
 import com.koreait.board.bean.BoardVO;
 import com.koreait.board.dao.BoardDAO;
 import org.slf4j.Logger;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/board/*")
@@ -18,6 +21,18 @@ public class BoardController {
     @Autowired
     private BoardDAO dao;
 
+    @GetMapping("list")
+    public void list(String type, String keyword, Model model){
+        log.info("--------------------------------------->");
+        log.info("Get List Called");
+
+        if(keyword == null){
+            model.addAttribute("List", dao.getList());
+        }else{
+            model.addAttribute("list", dao.getListWithKey(type, keyword));
+        }
+    }
+
     // register글쓰기 화면 호출용
     @GetMapping("register")
     public void register(){
@@ -25,8 +40,57 @@ public class BoardController {
     }
     // register(글쓰기) 처리용
     @PostMapping("register")
-    public void write(BoardVO board){
-        log.info("writing : " + board);
-        log.info(dao.register(board) + "is complete");
+    public RedirectView write(BoardVO board, RedirectAttributes rttr){
+        log.info("글 쓴댄다 : " + board);
+        log.info(dao.register(board) + "건 등록 완료");
+
+        rttr.addFlashAttribute("msg", board.getBno() + "번 글이 등록되었습니다");
+        return new RedirectView("list");
+    }
+
+    //read(글 읽기) 처리용
+    //localhos:10000/board/read?bno=N를 호출했을 떄 내용을 보여주는 페이지
+    @RequestMapping("read")
+    public void read(Long bno, Model model){
+        log.info("------------------------------------->");
+        log.info("read : bno = " + bno);
+        model.addAttribute("vo", dao.read(bno));
+    }
+
+    //remove 처리용
+    //localhos:10000/board/read?bno=N를 호출했을 떄 내용을 삭제하는 기능
+    @RequestMapping("remove")
+    public RedirectView remove(Long bno, RedirectAttributes rttr){
+        log.info("--------------------------------->");
+        // log.info("삭제 건수 : " + dao.remove(bno));
+        log.info("--------------------------------->");
+
+        if(dao.remove(bno) > 0) {
+            rttr.addFlashAttribute("msg", "글 삭제에 성공하였습니다.");
+        }
+        else {
+            rttr.addFlashAttribute("msg", "너 지금 뭐한거냐?");
+        }
+
+        return new RedirectView("list");
+    }
+    // modify 처리용
+    // localhost:10000/board/modify?bno=N를 호출했을 때 수정페이지를 로딩하는 기능
+    @GetMapping("modify")
+    public void modify(Long bno, Model model) {
+        // bno를 가지고 BoardVO를 얻어온 후 model에 태우는 과정이 필요
+        model.addAttribute("board", dao.read(bno));
+    }
+
+    @PostMapping("modify")
+    public RedirectView modifyPost(BoardVO board, RedirectAttributes rttr) {
+        int count = dao.modify(board);
+
+        if(count > 0)
+            rttr.addFlashAttribute("msg", "글 " + board.getBno() + " 업데이트 완료");
+        else
+            rttr.addFlashAttribute("msg", "글 수정에 대실패하였습니다.");
+
+        return new RedirectView("list");
     }
 }

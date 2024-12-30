@@ -24,10 +24,13 @@ public interface BoardMapper {
      * @return 게시글 리스트
      */
     public List<BoardVO> getList();
-
+    public List<BoardVO> getListWithKey(String type, String keyword);
     //게시글 조회
     public BoardVO get(Long bno);
 
     //게시글 업데이트
-    public int update(BoardVO board);
+    public int update(BoardVO vo);
+
+    //게시글 삭제
+    public  int delete(Long bno);
 }
